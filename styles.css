@@ -64,3 +64,54 @@ footer{display:flex;align-items:center;justify-content:space-between;gap:15px;pa
 .uikit-demo-button{display:inline-block;margin-top:8px;padding:5px 10px;border-radius:4px;background:var(--accent);color:#171a12;font-size:7px;font-weight:700}
 .project-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:15px}.project-links a{font-size:10px;font-weight:700;color:var(--accent)}.project-links a:hover{text-decoration:underline;text-underline-offset:4px}
 @media(max-width:700px){.uikit-visual{min-height:190px}.project-links{gap:12px}}
+
+
+/* Motion polish: subtle, performant and accessible */
+:root{--ease-out:cubic-bezier(.16,1,.3,1)}
+html{scroll-behavior:smooth}
+body{overflow-x:hidden}
+.scroll-progress{position:fixed;z-index:1000;inset:0 0 auto;height:2px;background:transparent;pointer-events:none}
+.scroll-progress span{display:block;width:0;height:100%;background:var(--accent);box-shadow:0 0 12px #c9f27a88;transform-origin:left}
+.ambient-orb{position:absolute;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(70px);opacity:.12;animation:orb-drift 16s ease-in-out infinite alternate}
+.ambient-orb-one{width:280px;height:280px;top:210px;right:4%;background:#c9f27a}
+.ambient-orb-two{width:220px;height:220px;top:1250px;left:-100px;background:#8f83ff;animation-delay:-7s}
+@keyframes orb-drift{from{transform:translate3d(0,-12px,0) scale(.92)}to{transform:translate3d(22px,35px,0) scale(1.08)}}
+.site-header{position:sticky;top:0;z-index:50;background:rgba(16,17,20,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.brand-mark{transition:transform .45s var(--ease-out),border-radius .45s var(--ease-out)}
+.brand:hover .brand-mark{transform:rotate(-9deg) scale(1.08);border-radius:13px}
+.site-header nav a{position:relative;transition:color .25s ease}
+.site-header nav a:not(.nav-contact)::after{content:"";position:absolute;left:0;right:100%;bottom:-7px;height:1px;background:var(--accent);transition:right .35s var(--ease-out)}
+.site-header nav a:not(.nav-contact):hover::after{right:0}
+.hero-content>*{animation:hero-enter .85s var(--ease-out) both}
+.hero-content>.availability{animation-delay:.06s}
+.hero-content>h1{animation-delay:.14s}
+.hero-content>.hero-lead{animation-delay:.22s}
+.hero-content>.hero-buttons{animation-delay:.3s}
+.hero-content>.hero-proof{animation-delay:.38s}
+.profile-panel{animation:profile-enter 1.1s var(--ease-out) .18s both}
+@keyframes hero-enter{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes profile-enter{from{opacity:0;transform:translate3d(28px,18px,0) scale(.97)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+.profile-frame{transition:transform .65s var(--ease-out),box-shadow .65s var(--ease-out)}
+.profile-panel:hover .profile-frame{transform:translateY(-5px) rotate(.5deg);box-shadow:0 24px 70px #0006}
+.profile-decoration{animation:decoration-turn 24s linear infinite}
+.decoration-two{animation-direction:reverse;animation-duration:18s}
+@keyframes decoration-turn{to{transform:rotate(405deg)}}
+.reveal-ready .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);transition-delay:var(--reveal-delay,0ms)}
+.reveal-ready .reveal.is-visible{opacity:1;transform:translateY(0)}
+.expertise-card,.project-row,.experience-item,.approach-points>div{transition:transform .45s var(--ease-out),border-color .35s ease,background-color .35s ease}
+.expertise-card:hover{transform:translateY(-7px)}
+.project-row{transition:background-color .35s ease,padding .35s var(--ease-out)}
+.project-row:hover{background:linear-gradient(90deg,#c9f27a09,transparent);padding-left:9px;padding-right:9px}
+.project-visual{transition:transform .65s var(--ease-out),filter .65s ease}
+.project-row:hover .project-visual{transform:scale(1.025);filter:saturate(1.18)}
+.uikit-window{transition:transform .7s var(--ease-out)}
+.project-row:hover .uikit-window{transform:rotate(0) translateY(-4px) scale(1.025)}
+.button{transition:transform .35s var(--ease-out),box-shadow .35s ease,background .25s ease}
+.button-primary:hover{box-shadow:0 8px 28px #c9f27a25}
+.contact-section{position:relative;overflow:hidden;isolation:isolate}
+.contact-section::before{content:"";position:absolute;z-index:-1;width:340px;height:340px;left:50%;top:-300px;transform:translateX(-50%);border:1px solid #c9f27a25;border-radius:50%;box-shadow:0 0 0 35px #c9f27a08,0 0 0 70px #c9f27a05}
+@media(max-width:700px){.site-header{position:sticky}.site-header nav{top:72px}.ambient-orb{opacity:.07}.project-row:hover{padding-left:0;padding-right:0}}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+  .reveal-ready .reveal{opacity:1;transform:none}
+}
