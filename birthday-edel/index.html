@@ -208,21 +208,22 @@ h1,h2,p{margin-top:0}
   if(!musicOn||!musicContext)return;
   const bpm=82,beat=60/bpm,now=musicContext.currentTime;
   let at=now+.04;
-  for(let i=musicStep;i<birthdayNotes.length;i++){
+  for(let i=0;i<birthdayNotes.length;i++){
    const dur=noteBeats[i]*beat;
    playPianoNote(birthdayNotes[i],at,dur*.9,.14);
    if(i%6===0){const chord=[[53,57,60],[48,53,57],[53,57,60],[50,53,58]][Math.floor(i/6)%4];chord.forEach((n,j)=>playPianoNote(n-12,at+j*.16,1.05,.035));}
    at+=dur;
   }
-  musicStep=0;
+  const total=noteBeats.reduce((a,b)=>a+b,0)*beat*1000;
+  clearTimeout(musicTimer);
+  musicTimer=setTimeout(()=>{if(musicOn)scheduleMusic();},total);
  }
  async function startMusic(){
   try{
+   if(musicOn)return;
    if(!musicContext)musicContext=new (window.AudioContext||window.webkitAudioContext)();
-   await musicContext.resume();musicOn=true;musicStep=0;scheduleMusic();
-   clearTimeout(musicTimer);
-   const total=noteBeats.reduce((a,b)=>a+b,0)*60/82*1000;
-   musicTimer=setTimeout(()=>{if(musicOn)scheduleMusic();},total);
+   await musicContext.resume();
+   musicOn=true;scheduleMusic();
    $('musicToggle').setAttribute('aria-pressed','true');$('musicToggle').textContent='♫';
    $('musicToggle').setAttribute('aria-label','Pause birthday music');
   }catch(e){console.warn('Audio playback could not start',e);}
@@ -234,6 +235,9 @@ h1,h2,p{margin-top:0}
   $('musicToggle').setAttribute('aria-label','Play birthday music');
  }
  $('musicToggle').addEventListener('click',()=>musicOn?stopMusic():startMusic());
+ // Try autoplay; browsers that block it will start music on the first user gesture.
+ startMusic();
+ document.addEventListener('pointerdown',()=>{if(!musicOn)startMusic();},{once:true,passive:true});
 
  const canvas = $('sky'), ctx = canvas.getContext('2d');
  let w=0,h=0,dpr=1,particles=[],raf=0;
