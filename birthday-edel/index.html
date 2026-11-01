@@ -71,6 +71,27 @@ h1,h2,p{margin-top:0}
 .footer-note{font-size:9px;letter-spacing:.15em;color:#f3d8e55b;margin-top:29px;text-transform:uppercase}
 @media(min-height:850px){.page{padding-top:45px;padding-bottom:50px}.cake-wrap{height:275px}.cake-body{height:125px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+
+/* Memories gallery */
+.gallery-kicker{margin-bottom:10px}
+.gallery-title{font-family:'Playfair Display',serif;font-size:clamp(28px,7vw,38px);font-weight:500;line-height:1.2;margin:0 0 9px}
+.gallery-title em{color:#ffabd1}
+.gallery-intro{font-size:13px;line-height:1.7;color:#f5dce9a8;margin:0 auto 22px;max-width:310px}
+.memory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;text-align:left}
+.memory-card{position:relative;border:1px solid #ffb5d43d;border-radius:15px;overflow:hidden;background:#29152e;box-shadow:0 9px 24px #0003;cursor:pointer;padding:0;min-width:0;aspect-ratio:4/5}
+.memory-card:nth-child(3n){aspect-ratio:4/5}
+.memory-card img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .55s ease,filter .55s ease}
+.memory-card:active img{transform:scale(1.04)}
+.memory-card:after{content:'';position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#140817d9)}
+.memory-caption{position:absolute;z-index:1;bottom:11px;left:11px;right:11px;font-family:'Playfair Display',serif;font-size:12px;line-height:1.35;color:#fff4f8;text-shadow:0 1px 8px #000}
+.gallery-actions{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:22px}
+.lightbox{display:none;position:fixed;inset:0;z-index:20;background:#09050deF;align-items:center;justify-content:center;padding:24px 16px}
+.lightbox.open{display:flex;animation:rise .25s ease both}
+.lightbox img{max-width:100%;max-height:78svh;object-fit:contain;border-radius:13px;box-shadow:0 0 35px #ff75b533}
+.lightbox-close{position:absolute;top:max(18px,env(safe-area-inset-top));right:18px;border:1px solid #fff5;background:#2c1834;color:white;border-radius:50%;width:44px;height:44px;font-size:23px;cursor:pointer}
+.lightbox-caption{position:absolute;bottom:max(25px,env(safe-area-inset-bottom));left:20px;right:20px;text-align:center;color:#ffe4ef;font-family:'Playfair Display',serif;font-style:italic;font-size:15px}
+@media(prefers-reduced-motion:reduce){.memory-card img{transition:none}}
+
 </style>
 </head>
 <body>
@@ -103,8 +124,31 @@ h1,h2,p{margin-top:0}
     <div class="cake-sprinkle" aria-hidden="true">✦　•　✧　•　✦</div>
    </div>
    <div class="after-buttons">
-    <button class="cta" id="showLetter">One more little surprise <span aria-hidden="true">♥</span></button>
+    <button class="cta" id="showGallery">See our little memories <span aria-hidden="true">♥</span></button>
     <button class="text-button" id="celebrateAgain">Make a wish · celebrate again</button>
+   </div>
+  </section>
+
+
+  <section class="view" id="galleryView" aria-labelledby="galleryHeading">
+   <div class="kicker gallery-kicker">Little moments, big memories</div>
+   <h2 class="gallery-title" id="galleryHeading">A few moments with<br><em>my favourite person</em></h2>
+   <p class="gallery-intro">Every picture holds a little piece of a memory I’m grateful for.</p>
+   <div class="memory-grid" id="memoryGrid">
+    <button class="memory-card" data-photo="1" aria-label="Open photo 1"><img src="photos/photo-01.jpg" alt="Edel smiling" loading="lazy"><span class="memory-caption">A smile I could never get tired of</span></button>
+    <button class="memory-card" data-photo="2" aria-label="Open photo 2"><img src="photos/photo-02.jpg" alt="A couple selfie" loading="lazy"><span class="memory-caption">My favourite view is us</span></button>
+    <button class="memory-card" data-photo="3" aria-label="Open photo 3"><img src="photos/photo-03.jpg" alt="A seaside adventure together" loading="lazy"><span class="memory-caption">A little adventure together</span></button>
+    <button class="memory-card" data-photo="4" aria-label="Open photo 4"><img src="photos/photo-04.jpg" alt="A winter trip together" loading="lazy"><span class="memory-caption">A winter memory to keep</span></button>
+    <button class="memory-card" data-photo="5" aria-label="Open photo 5"><img src="photos/photo-05.jpg" alt="Edel portrait" loading="lazy"><span class="memory-caption">You make every moment brighter</span></button>
+    <button class="memory-card" data-photo="6" aria-label="Open photo 6"><img src="photos/photo-06.jpg" alt="Edel near a waterfall" loading="lazy"><span class="memory-caption">Chasing beautiful places with you</span></button>
+    <button class="memory-card" data-photo="7" aria-label="Open photo 7"><img src="photos/photo-07.jpg" alt="A mountain view together" loading="lazy"><span class="memory-caption">Somewhere beautiful, with you</span></button>
+    <button class="memory-card" data-photo="8" aria-label="Open photo 8"><img src="photos/photo-08.jpg" alt="A quiet moment together" loading="lazy"><span class="memory-caption">The moments I want to remember</span></button>
+    <button class="memory-card" data-photo="9" aria-label="Open photo 9"><img src="photos/photo-09.jpg" alt="Edel smiling" loading="lazy"><span class="memory-caption">Simply beautiful, always</span></button>
+    <button class="memory-card" data-photo="10" aria-label="Open photo 10"><img src="photos/photo-10.jpg" alt="Edel out in the evening" loading="lazy"><span class="memory-caption">One more memory, just us</span></button>
+   </div>
+   <div class="gallery-actions">
+    <button class="cta" id="showLetter">And now, a message for you <span aria-hidden="true">♥</span></button>
+    <button class="text-button" id="backToCake">Back to your birthday cake</button>
    </div>
   </section>
 
@@ -122,11 +166,16 @@ h1,h2,p{margin-top:0}
    <button class="text-button" id="backToBirthday">Back to your birthday celebration</button>
   </section>
  </div>
+ <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="lightbox-close" id="closeLightbox" aria-label="Close photo">×</button>
+  <img id="lightboxImage" src="" alt="">
+  <div class="lightbox-caption" id="lightboxCaption"></div>
+ </div>
 </main>
 <script>
 (() => {
  const $ = id => document.getElementById(id);
- const views = ['intro','birthday','letterView'].map($);
+ const views = ['intro','birthday','galleryView','letterView'].map($);
  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
  let current = 0;
  function show(index) {
@@ -173,7 +222,28 @@ h1,h2,p{margin-top:0}
   if(!reduced){setTimeout(()=>burst(w*.28,h*.35,65),950);setTimeout(()=>burst(w*.72,h*.3,65),1450);}
  });
  $('celebrateAgain').addEventListener('click',celebrate);
- $('showLetter').addEventListener('click',()=>{show(2);burst(w*.5,h*.32,65);});
+ $('showGallery').addEventListener('click',()=>{show(2);burst(w*.5,h*.24,55);});
+ $('backToCake').addEventListener('click',()=>show(1));
+ $('showLetter').addEventListener('click',()=>{show(3);burst(w*.5,h*.32,65);});
+ const captions = [
+  'A smile I could never get tired of','My favourite view is us','A little adventure together',
+  'A winter memory to keep','You make every moment brighter','Chasing beautiful places with you',
+  'Somewhere beautiful, with you','The moments I want to remember','Simply beautiful, always','One more memory, just us'
+ ];
+ const lightbox=$('lightbox'), lightboxImage=$('lightboxImage');
+ document.querySelectorAll('.memory-card').forEach(card=>{
+  card.addEventListener('click',()=>{
+   const index=Number(card.dataset.photo)-1;
+   lightboxImage.src='photos/photo-'+String(index+1).padStart(2,'0')+'.jpg';
+   lightboxImage.alt=card.querySelector('img').alt;
+   $('lightboxCaption').textContent=captions[index];
+   lightbox.classList.add('open');
+  });
+ });
+ function closeLightbox(){lightbox.classList.remove('open');lightboxImage.src='';}
+ $('closeLightbox').addEventListener('click',closeLightbox);
+ lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox();});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
  function openLetter(){
   $('letter').classList.add('open');
   $('letterHint').style.display='none';
