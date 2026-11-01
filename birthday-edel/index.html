@@ -97,7 +97,7 @@ h1,h2,p{margin-top:0}
 </style>
 </head>
 <body>
-<main class="page">
+<main class="page">\n <audio id="birthdayAudio" preload="auto" loop playsinline><source src="https://orangefreesounds.com/wp-content/uploads/2025/03/Emotional-love-piano-melody.mp3" type="audio/mpeg"></audio>
  <button class="music-toggle" id="musicToggle" aria-label="Play birthday music" aria-pressed="false" title="Play birthday music">♫</button>
  <div class="aurora"></div><div class="stars"></div><canvas id="sky" aria-hidden="true"></canvas>
  <div class="screen">
@@ -190,55 +190,37 @@ h1,h2,p{margin-top:0}
   views[current].classList.add('active');
   window.scrollTo({top:0,behavior:reduced?'auto':'smooth'});
  }
- // A soft piano-style Happy Birthday arrangement, synthesized locally so no external audio service is needed.
- let musicContext=null, musicTimer=null, musicOn=false, musicStep=0;
- const birthdayNotes=[65,65,67,65,70,69,65,65,67,65,72,70,65,65,77,74,70,69,67,75,75,74,70,72,70];
- const noteBeats=[.75,.25,1,1,1,2,.75,.25,1,1,1,2,.75,.25,1,1,1,1,2,.75,.25,1,1,1,2];
- function playPianoNote(midi,when,duration,volume=.13){
-  const ctx=musicContext, osc=ctx.createOscillator(), overtone=ctx.createOscillator(), gain=ctx.createGain();
-  const f=440*Math.pow(2,(midi-69)/12);
-  osc.type='sine';osc.frequency.setValueAtTime(f,when);
-  overtone.type='triangle';overtone.frequency.setValueAtTime(f*2,when);
-  const mix=ctx.createGain();mix.gain.setValueAtTime(.22,when);
-  gain.gain.setValueAtTime(.0001,when);gain.gain.exponentialRampToValueAtTime(volume,when+.025);gain.gain.exponentialRampToValueAtTime(.0001,when+duration);
-  osc.connect(mix);overtone.connect(mix);mix.connect(gain);gain.connect(ctx.destination);
-  osc.start(when);overtone.start(when);osc.stop(when+duration+.04);overtone.stop(when+duration+.04);
- }
- function scheduleMusic(){
-  if(!musicOn||!musicContext)return;
-  const bpm=82,beat=60/bpm,now=musicContext.currentTime;
-  let at=now+.04;
-  for(let i=0;i<birthdayNotes.length;i++){
-   const dur=noteBeats[i]*beat;
-   playPianoNote(birthdayNotes[i],at,dur*.9,.14);
-   if(i%6===0){const chord=[[53,57,60],[48,53,57],[53,57,60],[50,53,58]][Math.floor(i/6)%4];chord.forEach((n,j)=>playPianoNote(n-12,at+j*.16,1.05,.035));}
-   at+=dur;
-  }
-  const total=noteBeats.reduce((a,b)=>a+b,0)*beat*1000;
-  clearTimeout(musicTimer);
-  musicTimer=setTimeout(()=>{if(musicOn)scheduleMusic();},total);
- }
+ // Real MP3 soundtrack: romantic piano melody (CC BY 4.0).
+ const birthdayAudio = $('birthdayAudio');
+ birthdayAudio.volume = 0.58;
  async function startMusic(){
   try{
-   if(musicOn)return;
-   if(!musicContext)musicContext=new (window.AudioContext||window.webkitAudioContext)();
-   await musicContext.resume();
-   musicOn=true;scheduleMusic();
-   $('musicToggle').setAttribute('aria-pressed','true');$('musicToggle').textContent='♫';
+   await birthdayAudio.play();
+   $('musicToggle').setAttribute('aria-pressed','true');
+   $('musicToggle').textContent='♫';
    $('musicToggle').setAttribute('aria-label','Pause birthday music');
-  }catch(e){console.warn('Audio playback could not start',e);}
+  }catch(e){
+   console.warn('Audio playback needs a user interaction',e);
+   $('musicToggle').setAttribute('aria-pressed','false');
+  }
  }
  function stopMusic(){
-  musicOn=false;clearTimeout(musicTimer);
-  if(musicContext)musicContext.suspend();
-  $('musicToggle').setAttribute('aria-pressed','false');$('musicToggle').textContent='♪';
+  birthdayAudio.pause();
+  $('musicToggle').setAttribute('aria-pressed','false');
+  $('musicToggle').textContent='♪';
   $('musicToggle').setAttribute('aria-label','Play birthday music');
  }
- $('musicToggle').addEventListener('click',()=>musicOn?stopMusic():startMusic());
- // Try autoplay; browsers that block it will start music on the first user gesture.
- startMusic();
- document.addEventListener('pointerdown',()=>{if(!musicOn)startMusic();},{once:true,passive:true});
-
+ $('musicToggle').addEventListener('click',()=>{
+  if(birthdayAudio.paused)startMusic();else stopMusic();
+ });
+ birthdayAudio.addEventListener('play',()=>{
+  $('musicToggle').setAttribute('aria-pressed','true');
+  $('musicToggle').setAttribute('aria-label','Pause birthday music');
+ });
+ birthdayAudio.addEventListener('pause',()=>{
+  $('musicToggle').setAttribute('aria-pressed','false');
+  $('musicToggle').setAttribute('aria-label','Play birthday music');
+ });
  const canvas = $('sky'), ctx = canvas.getContext('2d');
  let w=0,h=0,dpr=1,particles=[],raf=0;
  function resize(){
