@@ -98,7 +98,7 @@ h1,h2,p{margin-top:0}
 </style>
 </head>
 <body>
-<main class="page">\n <audio id="birthdayAudio" preload="auto" loop playsinline><source src="audio/happy-birthday.mp3" type="audio/mpeg"></audio>
+<main class="page">\n <audio id="birthdayAudio" autoplay preload="auto" loop playsinline><source src="audio/happy-birthday.mp3" type="audio/mpeg"></audio>
  <div class="music-credit"><a href="https://pixabay.com/music/classical-string-quartet-happy-birthday-471481" target="_blank" rel="noopener">Music: “Happy Birthday” by NastelBom · Pixabay Content License</a></div>
  <button class="music-toggle" id="musicToggle" aria-label="Play birthday music" aria-pressed="false" title="Play birthday music">♫</button>
  <div class="aurora"></div><div class="stars"></div><canvas id="sky" aria-hidden="true"></canvas>
@@ -195,6 +195,7 @@ h1,h2,p{margin-top:0}
  // Real MP3 soundtrack: romantic piano melody (CC BY 4.0).
  const birthdayAudio = $('birthdayAudio');
  birthdayAudio.volume = 0.58;
+ // Try autoplay on page load. Browsers may block audible autoplay until the visitor interacts.
  async function startMusic(){
   try{
    await birthdayAudio.play();
@@ -292,6 +293,8 @@ h1,h2,p{margin-top:0}
  $('envelope').addEventListener('click',openLetter);
  $('envelope').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openLetter();}});
  $('backToBirthday').addEventListener('click',()=>show(1));
+ // Attempt to start immediately; if blocked, the first tap on the page or music button starts it.
+ startMusic();
  if(reduced){$('celebrateAgain').textContent='Make a wish ♥';}
  addEventListener('pagehide',()=>{cancelAnimationFrame(raf);});
 })();
